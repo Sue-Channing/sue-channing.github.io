@@ -21,15 +21,15 @@
   <meta name="author" content="Sue-Channing">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、哈希表（1）两数之和 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。 你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。 你可以按任意顺序返回答案。 示例 1： 输入：nums &#x3D; [2,7,11,15], target &#x3D; 9输出：[0,1]解释：因为 n">
+    <meta name="description" content="一些有关哈希表的题目">
 <meta property="og:type" content="article">
 <meta property="og:title" content="11.12刷题记录">
 <meta property="og:url" content="http://example.com/2024/11/12/2024-11-12-11.12%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Sue-Channing">
-<meta property="og:description" content="一、哈希表（1）两数之和 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。 你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。 你可以按任意顺序返回答案。 示例 1： 输入：nums &#x3D; [2,7,11,15], target &#x3D; 9输出：[0,1]解释：因为 n">
+<meta property="og:description" content="一些有关哈希表的题目">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-12T14:06:08.856Z">
+<meta property="article:modified_time" content="2024-11-13T03:48:06.603Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="LeetCode">
@@ -269,7 +269,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          227 字
+          2.1k 字
         
       </span>
     
@@ -280,7 +280,7 @@
         
         
         
-          2 分钟
+          18 分钟
         
       </span>
     
@@ -331,7 +331,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年11月12日 晚上
+                    本文最后更新于 2024年11月13日 中午
                   
                 
               </p>
@@ -339,7 +339,8 @@
             
               <div class="markdown-body">
                 
-                <h2 id="一、哈希表"><a href="#一、哈希表" class="headerlink" title="一、哈希表"></a>一、哈希表</h2><h3 id="（1）两数之和"><a href="#（1）两数之和" class="headerlink" title="（1）两数之和"></a>（1）<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/description/?envType=study-plan-v2&envId=top-100-liked">两数之和</a></h3><blockquote>
+                <p>一些有关哈希表的题目<span id="more"></span></p>
+<h1 id="一、哈希表"><a href="#一、哈希表" class="headerlink" title="一、哈希表"></a>一、哈希表</h1><h2 id="（1）两数之和"><a href="#（1）两数之和" class="headerlink" title="（1）两数之和"></a>（1）<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/description/?envType=study-plan-v2&envId=top-100-liked">两数之和</a></h2><blockquote>
 <p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。</p>
 <p>你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。</p>
 <p>你可以按任意顺序返回答案。</p>
@@ -350,22 +351,140 @@
 </blockquote>
 <p><strong>解法：</strong></p>
 <p><strong>（1）暴力</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">twoSum</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> target)</span> </span>&#123;<br>        <span class="hljs-type">int</span> n=nums.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)&#123;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=i<span class="hljs-number">+1</span>;j&lt;n;j++)&#123;<br>                <span class="hljs-keyword">if</span>(nums[i]+nums[j]==target)&#123;<br>                    <span class="hljs-keyword">return</span> &#123;i,j&#125;;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> &#123; &#125;;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">twoSum</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> target)</span> </span>&#123;<br>        <span class="hljs-type">int</span> n=nums.<span class="hljs-built_in">size</span>();<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++)&#123;           <span class="hljs-comment">//前后比较</span><br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=i<span class="hljs-number">+1</span>;j&lt;n;j++)&#123;<br>                <span class="hljs-keyword">if</span>(nums[i]+nums[j]==target)&#123;<br>                    <span class="hljs-keyword">return</span> &#123;i,j&#125;;<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> &#123;&#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p><strong>（2）哈希查找</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">twoSum</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> target)</span> </span>&#123;<br>        unordered_map&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt;ht;  <span class="hljs-comment">//定义键值对哈希表</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;nums.<span class="hljs-built_in">size</span>();i++)&#123;<br>            <span class="hljs-keyword">auto</span> it=ht.<span class="hljs-built_in">find</span>(target-nums[i]);<br>            <span class="hljs-comment">//auto为自动变量，即unordered_map&lt;int,int&gt;::iterator迭代器</span><br>            <span class="hljs-keyword">if</span>(it!=ht.<span class="hljs-built_in">end</span>())&#123;<br>                <span class="hljs-keyword">return</span> &#123;i,it-&gt;second&#125;;<span class="hljs-comment">//键存放nums值，值存放索引，查找键，返回值</span><br>            &#125;<br>            ht[nums[i]]=i;<br>        &#125;<br>        <span class="hljs-keyword">return</span> &#123;&#125;;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
 
 
+<ul>
+<li><h2 id="哈希表的知识点"><a href="#哈希表的知识点" class="headerlink" title="哈希表的知识点"></a>哈希表的知识点</h2><p>在 C++ 中，哈希表通常使用 <code>unordered_map</code> 或 <code>unordered_set</code>，这两种数据结构都属于 STL（标准模板库）。它们基于哈希表实现，提供高效的查找、插入、删除操作。</p>
+<p>以下是 <code>unordered_map</code> 和 <code>unordered_set</code> 常用的函数和操作：</p>
+<h3 id="1-unordered-map（键值对哈希表）常用函数"><a href="#1-unordered-map（键值对哈希表）常用函数" class="headerlink" title="1. unordered_map（键值对哈希表）常用函数"></a>1. <strong><code>unordered_map</code>（键值对哈希表）常用函数</strong></h3><p><code>unordered_map</code> 存储的是键值对（<code>key-value</code>），其中键（<code>key</code>）是唯一的，值（<code>value</code>）可以重复。</p>
+<p>以下是简洁版的哈希表（<code>unordered_map</code>）用法大全：</p>
+<h3 id="1-创建和初始化"><a href="#1-创建和初始化" class="headerlink" title="1. 创建和初始化"></a>1. <strong>创建和初始化</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unordered_map&gt;</span></span><br><br>unordered_map&lt;<span class="hljs-type">int</span>, string&gt; map1;  <span class="hljs-comment">// 空哈希表</span><br>unordered_map&lt;<span class="hljs-type">int</span>, string&gt; map2 = &#123;&#123;<span class="hljs-number">1</span>, <span class="hljs-string">&quot;one&quot;</span>&#125;, &#123;<span class="hljs-number">2</span>, <span class="hljs-string">&quot;two&quot;</span>&#125;&#125;;  <span class="hljs-comment">// 初始化</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-插入元素"><a href="#2-插入元素" class="headerlink" title="2. 插入元素"></a>2. <strong>插入元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">map1[<span class="hljs-number">3</span>] = <span class="hljs-string">&quot;three&quot;</span>;        <span class="hljs-comment">// 使用下标插入元素</span><br>map<span class="hljs-number">1.</span><span class="hljs-built_in">insert</span>(&#123;<span class="hljs-number">4</span>, <span class="hljs-string">&quot;four&quot;</span>&#125;);  <span class="hljs-comment">// 使用 insert 插入元素</span><br>map<span class="hljs-number">1.</span><span class="hljs-built_in">emplace</span>(<span class="hljs-number">5</span>, <span class="hljs-string">&quot;five&quot;</span>);   <span class="hljs-comment">// 使用 emplace 插入元素</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-访问元素"><a href="#3-访问元素" class="headerlink" title="3. 访问元素"></a>3. <strong>访问元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">cout &lt;&lt; map2[<span class="hljs-number">1</span>];           <span class="hljs-comment">// 访问元素，若不存在则插入默认值</span><br>cout &lt;&lt; map<span class="hljs-number">2.</span><span class="hljs-built_in">at</span>(<span class="hljs-number">1</span>);        <span class="hljs-comment">// 使用 at() 访问，若不存在抛出异常</span><br>cout &lt;&lt; map<span class="hljs-number">2.f</span>ind(<span class="hljs-number">2</span>)-&gt;second; <span class="hljs-comment">// 通过 find 查找，返回迭代器</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-删除元素"><a href="#4-删除元素" class="headerlink" title="4. 删除元素"></a>4. <strong>删除元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">map<span class="hljs-number">2.</span><span class="hljs-built_in">erase</span>(<span class="hljs-number">2</span>);             <span class="hljs-comment">// 删除指定键的元素</span><br>map<span class="hljs-number">2.</span><span class="hljs-built_in">erase</span>(map<span class="hljs-number">2.</span><span class="hljs-built_in">begin</span>());  <span class="hljs-comment">// 删除第一个元素</span><br>map<span class="hljs-number">2.</span><span class="hljs-built_in">clear</span>();              <span class="hljs-comment">// 清空所有元素</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-大小和容量"><a href="#5-大小和容量" class="headerlink" title="5. 大小和容量"></a>5. <strong>大小和容量</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">cout &lt;&lt; map<span class="hljs-number">1.</span><span class="hljs-built_in">size</span>();      <span class="hljs-comment">// 返回元素个数</span><br>cout &lt;&lt; map<span class="hljs-number">1.</span><span class="hljs-built_in">empty</span>();     <span class="hljs-comment">// 检查是否为空</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-遍历哈希表"><a href="#6-遍历哈希表" class="headerlink" title="6. 遍历哈希表"></a>6. <strong>遍历哈希表</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; pair : map2) &#123;<br>    cout &lt;&lt; pair.first &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; pair.second &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-查找元素"><a href="#7-查找元素" class="headerlink" title="7. 查找元素"></a>7. <strong>查找元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (map<span class="hljs-number">2.f</span>ind(<span class="hljs-number">3</span>) != map<span class="hljs-number">2.</span><span class="hljs-built_in">end</span>()) &#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;Found 3!&quot;</span>;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;Not Found!&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-修改元素"><a href="#8-修改元素" class="headerlink" title="8. 修改元素"></a>8. <strong>修改元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">map2[<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;uno&quot;</span>;           <span class="hljs-comment">// 修改已有元素的值</span><br>map2[<span class="hljs-number">6</span>] = <span class="hljs-string">&quot;six&quot;</span>;           <span class="hljs-comment">// 如果不存在，会自动插入</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="9-获取键的哈希值"><a href="#9-获取键的哈希值" class="headerlink" title="9. 获取键的哈希值"></a>9. <strong>获取键的哈希值</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">size_t</span> hash_val = map<span class="hljs-number">1.</span><span class="hljs-built_in">hash_function</span>()(<span class="hljs-number">3</span>);  <span class="hljs-comment">// 获取键 3 的哈希值</span><br></code></pre></td></tr></table></figure>
 
 
 
+<h3 id="2-unordered-set（仅存储键的哈希表）常用函数"><a href="#2-unordered-set（仅存储键的哈希表）常用函数" class="headerlink" title="2.unordered_set（仅存储键的哈希表）常用函数"></a><strong>2.<code>unordered_set</code>（仅存储键的哈希表）常用函数</strong></h3><p>以下是简洁版的 <code>unordered_set</code> 用法大全：</p>
+<h3 id="1-创建和初始化-1"><a href="#1-创建和初始化-1" class="headerlink" title="1. 创建和初始化"></a>1. <strong>创建和初始化</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unordered_set&gt;</span></span><br><br>unordered_set&lt;<span class="hljs-type">int</span>&gt; set1;            <span class="hljs-comment">// 空的 unordered_set</span><br>unordered_set&lt;<span class="hljs-type">int</span>&gt; set2 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;; <span class="hljs-comment">// 初始化 unordered_set</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-插入元素-1"><a href="#2-插入元素-1" class="headerlink" title="2. 插入元素"></a>2. <strong>插入元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">set<span class="hljs-number">1.</span><span class="hljs-built_in">insert</span>(<span class="hljs-number">4</span>);           <span class="hljs-comment">// 插入元素</span><br>set<span class="hljs-number">1.</span><span class="hljs-built_in">emplace</span>(<span class="hljs-number">5</span>);          <span class="hljs-comment">// 使用 emplace 插入元素</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-访问元素-1"><a href="#3-访问元素-1" class="headerlink" title="3. 访问元素"></a>3. <strong>访问元素</strong></h3><p><code>unordered_set</code> 不支持通过下标访问元素，只能通过遍历或查找来访问元素。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; num : set2) &#123;<br>    cout &lt;&lt; num &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;  <span class="hljs-comment">// 遍历访问元素</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-删除元素-1"><a href="#4-删除元素-1" class="headerlink" title="4. 删除元素"></a>4. <strong>删除元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">set<span class="hljs-number">1.</span><span class="hljs-built_in">erase</span>(<span class="hljs-number">4</span>);            <span class="hljs-comment">// 删除指定元素</span><br>set<span class="hljs-number">1.</span><span class="hljs-built_in">erase</span>(set<span class="hljs-number">1.</span><span class="hljs-built_in">begin</span>()); <span class="hljs-comment">// 删除第一个元素</span><br>set<span class="hljs-number">1.</span><span class="hljs-built_in">clear</span>();             <span class="hljs-comment">// 清空所有元素</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-大小和容量-1"><a href="#5-大小和容量-1" class="headerlink" title="5. 大小和容量"></a>5. <strong>大小和容量</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">cout &lt;&lt; set<span class="hljs-number">1.</span><span class="hljs-built_in">size</span>();      <span class="hljs-comment">// 返回元素个数</span><br>cout &lt;&lt; set<span class="hljs-number">1.</span><span class="hljs-built_in">empty</span>();     <span class="hljs-comment">// 检查是否为空</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-查找元素"><a href="#6-查找元素" class="headerlink" title="6. 查找元素"></a>6. <strong>查找元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">if</span> (set<span class="hljs-number">2.f</span>ind(<span class="hljs-number">3</span>) != set<span class="hljs-number">2.</span><span class="hljs-built_in">end</span>()) &#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;Found 3!&quot;</span>;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;Not Found!&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="7-检查元素是否存在"><a href="#7-检查元素是否存在" class="headerlink" title="7. 检查元素是否存在"></a>7. <strong>检查元素是否存在</strong></h3><p><code>unordered_set</code> 会自动忽略重复元素。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">set<span class="hljs-number">2.</span><span class="hljs-built_in">insert</span>(<span class="hljs-number">3</span>);  <span class="hljs-comment">// 插入重复元素不会改变 set2</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="8-遍历元素"><a href="#8-遍历元素" class="headerlink" title="8. 遍历元素"></a>8. <strong>遍历元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; num : set2) &#123;<br>    cout &lt;&lt; num &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;  <span class="hljs-comment">// 遍历访问所有元素</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 
 
+<h2 id="3-迭代器相关操作"><a href="#3-迭代器相关操作" class="headerlink" title="3. 迭代器相关操作"></a>3. <strong>迭代器相关操作</strong></h2><ul>
+<li><p><strong><code>begin()</code></strong> 和 <strong><code>end()</code></strong><br>返回指向容器第一个元素的迭代器和指向容器末尾后一个位置的迭代器。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> it = map.<span class="hljs-built_in">begin</span>(); it != map.<span class="hljs-built_in">end</span>(); ++it) &#123;<br>    cout &lt;&lt; it-&gt;first &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; endl;  <span class="hljs-comment">// 打印每一个键值对</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>cbegin()</code></strong> 和 <strong><code>cend()</code></strong><br>返回常量迭代器，不能修改容器中的元素。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> it = map.<span class="hljs-built_in">cbegin</span>(); it != map.<span class="hljs-built_in">cend</span>(); ++it) &#123;<br>    cout &lt;&lt; it-&gt;first &lt;&lt; <span class="hljs-string">&quot;: &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; endl;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="（2）字母异位词分组"><a href="#（2）字母异位词分组" class="headerlink" title="（2）字母异位词分组"></a>（2）<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/group-anagrams/?envType=study-plan-v2&envId=top-100-liked">字母异位词分组</a></h2><blockquote>
+<p>给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。</p>
+<p>字母异位词 是由重新排列源单词的所有字母得到的一个新单词。</p>
+<p>示例 1:</p>
+<p>输入: strs &#x3D; [“eat”, “tea”, “tan”, “ate”, “nat”, “bat”]<br>输出: [[“bat”],[“nat”,”tan”],[“ate”,”eat”,”tea”]]<br>示例 2:</p>
+<p>输入: strs &#x3D; [“”]<br>输出: [[“”]]<br>示例 3:</p>
+<p>输入: strs &#x3D; [“a”]<br>输出: [[“a”]]</p>
+</blockquote>
+<p><strong>思路</strong></p>
+<p>把字符串排序，排序结果作为哈希键，用vector把键相同的字符串放在一起作为哈希值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    vector&lt;vector&lt;string&gt;&gt; <span class="hljs-built_in">groupAnagrams</span>(vector&lt;string&gt;&amp; strs) &#123;<br>        vector&lt;vector&lt;string&gt;&gt;ans;<br>        <span class="hljs-comment">//怎么设计排序来创造哈希键</span><br>        unordered_map&lt;string,vector&lt;string&gt;&gt;ht;<br>        <span class="hljs-comment">/*for(int i=0;i&lt;strs.size();i++)&#123;</span><br><span class="hljs-comment">            string str=strs[i];</span><br><span class="hljs-comment">            sort(strs[i].begin(),strs[i].end());</span><br><span class="hljs-comment">            ht[strs[i]].emplace_back(str);</span><br><span class="hljs-comment">        &#125;*/</span><br>        <span class="hljs-keyword">for</span>(string&amp; str: strs)&#123;<br>            string s=str;<br>            <span class="hljs-built_in">sort</span>(str.<span class="hljs-built_in">begin</span>(),str.<span class="hljs-built_in">end</span>());<br>            ht[str].<span class="hljs-built_in">emplace_back</span>(s);<br>        &#125;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> it=ht.<span class="hljs-built_in">begin</span>();it!=ht.<span class="hljs-built_in">end</span>();it++)&#123;<br>            ans.<span class="hljs-built_in">emplace_back</span>(it-&gt;second);<br>        &#125;<br>        <span class="hljs-keyword">return</span> ans;<br><br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 
 
 
+<ul>
+<li><h2 id="vector向量用法"><a href="#vector向量用法" class="headerlink" title="vector向量用法"></a>vector向量用法</h2></li>
+</ul>
+<p>以下是简洁版的 <code>std::vector</code> 用法总结：</p>
+<h3 id="1-创建和初始化-2"><a href="#1-创建和初始化-2" class="headerlink" title="1. 创建和初始化"></a>1. <strong>创建和初始化</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vector&lt;<span class="hljs-type">int</span>&gt; vec1;              <span class="hljs-comment">// 空的 vector</span><br><span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">vec2</span><span class="hljs-params">(<span class="hljs-number">5</span>, <span class="hljs-number">0</span>)</span></span>;        <span class="hljs-comment">// 5 个元素，初始化为 0</span><br>vector&lt;<span class="hljs-type">int</span>&gt; vec3 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;  <span class="hljs-comment">// 初始化列表</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-访问元素"><a href="#2-访问元素" class="headerlink" title="2. 访问元素"></a>2. <strong>访问元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">cout &lt;&lt; vec3[<span class="hljs-number">2</span>];          <span class="hljs-comment">// 使用索引访问</span><br>cout &lt;&lt; vec<span class="hljs-number">3.</span><span class="hljs-built_in">at</span>(<span class="hljs-number">2</span>);       <span class="hljs-comment">// 使用 at() 访问（带边界检查）</span><br>cout &lt;&lt; vec<span class="hljs-number">3.f</span>ront();     <span class="hljs-comment">// 第一个元素</span><br>cout &lt;&lt; vec<span class="hljs-number">3.</span><span class="hljs-built_in">back</span>();      <span class="hljs-comment">// 最后一个元素</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-修改元素"><a href="#3-修改元素" class="headerlink" title="3. 修改元素"></a>3. <strong>修改元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vec3[<span class="hljs-number">2</span>] = <span class="hljs-number">10</span>;             <span class="hljs-comment">// 通过索引修改</span><br>vec<span class="hljs-number">3.</span><span class="hljs-built_in">at</span>(<span class="hljs-number">2</span>) = <span class="hljs-number">20</span>;          <span class="hljs-comment">// 使用 at() 修改</span><br>vec<span class="hljs-number">3.f</span>ront() = <span class="hljs-number">30</span>;        <span class="hljs-comment">// 修改第一个元素</span><br>vec<span class="hljs-number">3.</span><span class="hljs-built_in">back</span>() = <span class="hljs-number">40</span>;         <span class="hljs-comment">// 修改最后一个元素</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-添加元素"><a href="#4-添加元素" class="headerlink" title="4. 添加元素"></a>4. <strong>添加元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vec<span class="hljs-number">3.</span><span class="hljs-built_in">push_back</span>(<span class="hljs-number">6</span>);        <span class="hljs-comment">// 添加元素到末尾</span><br>vec<span class="hljs-number">3.</span><span class="hljs-built_in">emplace_back</span>(<span class="hljs-number">7</span>);     <span class="hljs-comment">// 在末尾直接构造元素</span><br>vec<span class="hljs-number">3.</span><span class="hljs-built_in">insert</span>(vec<span class="hljs-number">3.</span><span class="hljs-built_in">begin</span>(), <span class="hljs-number">15</span>);  <span class="hljs-comment">// 插入元素到指定位置</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-删除元素"><a href="#5-删除元素" class="headerlink" title="5. 删除元素"></a>5. <strong>删除元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vec<span class="hljs-number">3.</span><span class="hljs-built_in">pop_back</span>();          <span class="hljs-comment">// 删除最后一个元素</span><br>vec<span class="hljs-number">3.</span><span class="hljs-built_in">erase</span>(vec<span class="hljs-number">3.</span><span class="hljs-built_in">begin</span>()); <span class="hljs-comment">// 删除第一个元素</span><br>vec<span class="hljs-number">3.</span><span class="hljs-built_in">clear</span>();             <span class="hljs-comment">// 清空所有元素</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="6-大小和容量"><a href="#6-大小和容量" class="headerlink" title="6. 大小和容量"></a>6. <strong>大小和容量</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">cout &lt;&lt; vec<span class="hljs-number">3.</span><span class="hljs-built_in">size</span>();      <span class="hljs-comment">// 元素个数</span><br>cout &lt;&lt; vec<span class="hljs-number">3.</span><span class="hljs-built_in">capacity</span>();  <span class="hljs-comment">// 容量</span><br>cout &lt;&lt; vec<span class="hljs-number">3.</span><span class="hljs-built_in">empty</span>();     <span class="hljs-comment">// 是否为空</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="7-遍历元素"><a href="#7-遍历元素" class="headerlink" title="7. 遍历元素"></a>7. <strong>遍历元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : vec3) &#123;    <span class="hljs-comment">// 使用范围基于的 for 循环遍历</span><br>    cout &lt;&lt; num &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="8-排序"><a href="#8-排序" class="headerlink" title="8. 排序"></a>8. <strong>排序</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">sort</span>(vec<span class="hljs-number">3.</span><span class="hljs-built_in">begin</span>(), vec<span class="hljs-number">3.</span><span class="hljs-built_in">end</span>());  <span class="hljs-comment">// 升序排序</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="9-查找元素"><a href="#9-查找元素" class="headerlink" title="9. 查找元素"></a>9. <strong>查找元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> it = <span class="hljs-built_in">find</span>(vec<span class="hljs-number">3.</span><span class="hljs-built_in">begin</span>(), vec<span class="hljs-number">3.</span><span class="hljs-built_in">end</span>(), <span class="hljs-number">10</span>);  <span class="hljs-comment">// 查找元素</span><br><span class="hljs-keyword">if</span> (it != vec<span class="hljs-number">3.</span><span class="hljs-built_in">end</span>()) &#123;<br>    cout &lt;&lt; <span class="hljs-string">&quot;Found&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="10-反转元素"><a href="#10-反转元素" class="headerlink" title="10. 反转元素"></a>10. <strong>反转元素</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-built_in">reverse</span>(vec<span class="hljs-number">3.</span><span class="hljs-built_in">begin</span>(), vec<span class="hljs-number">3.</span><span class="hljs-built_in">end</span>());  <span class="hljs-comment">// 反转元素顺序</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="11-交换两个-vector"><a href="#11-交换两个-vector" class="headerlink" title="11. 交换两个 vector"></a>11. <strong>交换两个 <code>vector</code></strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vector&lt;<span class="hljs-type">int</span>&gt; vec4 = &#123;<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;<br>vec<span class="hljs-number">3.</span><span class="hljs-built_in">swap</span>(vec4);   <span class="hljs-comment">// 交换 vec3 和 vec4 内容</span><br></code></pre></td></tr></table></figure>
 
 
 
+<ul>
+<li><h2 id="范围基于的-for-循环"><a href="#范围基于的-for-循环" class="headerlink" title="范围基于的 for 循环"></a><strong>范围基于的 <code>for</code> 循环</strong></h2><p>C++ 中的 <strong>范围基于的 <code>for</code> 循环</strong> 用于简化遍历容器：</p>
+<div>这是右对齐的文本</div>
+
+<h3 id="1-语法："><a href="#1-语法：" class="headerlink" title="1.语法："></a>1.语法：</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">for</span> (元素类型&amp; 元素 : 容器) &#123;<br>    <span class="hljs-comment">// 操作元素</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-示例："><a href="#2-示例：" class="headerlink" title="2.示例："></a>2.示例：</h3><ul>
+<li><strong>数组</strong>：<code>for (int num : arr) &#123; &#125;</code></li>
+<li>**<code>vector</code>**：<code>for (int&amp; num : vec) &#123; &#125;</code></li>
+<li>**<code>unordered_map</code>**：<code>for (const auto&amp; pair : map) &#123; &#125;</code></li>
+</ul>
+<h3 id="3-const和引用"><a href="#3-const和引用" class="headerlink" title="3.const和引用"></a>3.const和引用</h3></li>
+</ul>
+<h4 id="1-非-const-引用（可以修改元素）："><a href="#1-非-const-引用（可以修改元素）：" class="headerlink" title="1. 非 const 引用（可以修改元素）："></a>1. <strong>非 <code>const</code> 引用</strong>（可以修改元素）：</h4><p>如果你想修改容器中的元素，可以使用非 <code>const</code> 引用：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>&amp; num : nums) &#123;<br>    num *= <span class="hljs-number">2</span>;  <span class="hljs-comment">// 将每个元素乘以 2</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-const-引用（只能读取元素）："><a href="#2-const-引用（只能读取元素）：" class="headerlink" title="2. const 引用（只能读取元素）："></a>2. <strong><code>const</code> 引用</strong>（只能读取元素）：</h4><p>如果你不需要修改容器中的元素，使用 <code>const</code> 引用来避免不必要的拷贝：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-type">int</span>&amp; num : nums) &#123;<br>    cout &lt;&lt; num &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;  <span class="hljs-comment">// 只能读取元素，不能修改</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><code>const</code> 引用确保了容器元素在遍历过程中不会被修改，并且避免了可能的拷贝开销。</p>
+<h3 id="4-适用范围："><a href="#4-适用范围：" class="headerlink" title="4.适用范围："></a>4.适用范围：</h3><p>范围基于的 <code>for</code> 循环适用于所有支持迭代器的容器，如：</p>
+<ul>
+<li><code>std::vector</code></li>
+<li><code>std::list</code></li>
+<li><code>std::deque</code></li>
+<li><code>std::set</code> 和 <code>std::map</code></li>
+<li><code>std::array</code>（C++11及以后）</li>
+<li>原始数组</li>
+</ul>
+<p>但是，它<strong>不适用于</strong>需要根据索引访问元素的情况，例如 <code>std::string</code> 或者一些自定义的容器。</p>
 
                 
               </div>
