@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/logo.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sue-Channing">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="usePopcorn(记录观看过的电影并打分)（一）实现页面及功能页面：  组件树：  功能： 1、输入电影名称搜索电影，搜索数量呈现在Numresults组件里，搜索结果呈现在左侧的Box组件里。  2、选择并查看电影简介及详细信息（上映时间，电影时长，电影类型，平均评分，主演人员，导演等）   3、对电影进行评分并添加在我的电影表单里   4、删除我的观看单里的影片并重新计算平均评分值和观看时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="06-usePopcorn">
+<meta property="og:url" content="http://sue-channing.github.io/2024/12/16/06-usePopcorn/index.html">
+<meta property="og:site_name" content="Sue-Channing">
+<meta property="og:description" content="usePopcorn(记录观看过的电影并打分)（一）实现页面及功能页面：  组件树：  功能： 1、输入电影名称搜索电影，搜索数量呈现在Numresults组件里，搜索结果呈现在左侧的Box组件里。  2、选择并查看电影简介及详细信息（上映时间，电影时长，电影类型，平均评分，主演人员，导演等）   3、对电影进行评分并添加在我的电影表单里   4、删除我的观看单里的影片并重新计算平均评分值和观看时">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216124806232.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216125046536.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130354360.png">
+<meta property="og:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216130710192.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216142930705.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130821163.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130855688.png">
+<meta property="og:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216131151401.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216131259225.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216140545121.png">
+<meta property="article:published_time" content="2024-12-16T05:09:45.696Z">
+<meta property="article:modified_time" content="2024-12-16T06:46:20.915Z">
+<meta property="article:author" content="Sue-Channing">
+<meta property="article:tag" content="React">
+<meta property="article:tag" content="JSX">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216124806232.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>06-usePopcorn - Sue-Channing</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sue-channing.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":true,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"41fc030db57d5570dd22f78997dc4a7e","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sue-Channing</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="06-usePopcorn"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Sue-Channing
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-16 13:09" pubdate>
+          2024年12月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">06-usePopcorn</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年12月16日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="usePopcorn-记录观看过的电影并打分"><a href="#usePopcorn-记录观看过的电影并打分" class="headerlink" title="usePopcorn(记录观看过的电影并打分)"></a>usePopcorn(记录观看过的电影并打分)</h1><h2 id="（一）实现页面及功能"><a href="#（一）实现页面及功能" class="headerlink" title="（一）实现页面及功能"></a>（一）实现页面及功能</h2><p><strong>页面：</strong></p>
+<p><img src="C:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216124806232.png" srcset="/img/loading.gif" lazyload alt="初始页面"></p>
+<p><strong>组件树：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216125046536.png" srcset="/img/loading.gif" lazyload alt="组件树"></p>
+<p><strong>功能：</strong></p>
+<p>1、输入电影名称搜索电影，搜索数量呈现在Numresults组件里，搜索结果呈现在左侧的Box组件里。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130354360.png" srcset="/img/loading.gif" lazyload alt="功能1"></p>
+<p>2、选择并查看电影简介及详细信息（上映时间，电影时长，电影类型，平均评分，主演人员，导演等）</p>
+<p><img src="C:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216130710192.png" srcset="/img/loading.gif" lazyload alt="功能2"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216142930705.png" srcset="/img/loading.gif" lazyload alt="此时组件树"></p>
+<p>3、对电影进行评分并添加在我的电影表单里</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130821163.png" srcset="/img/loading.gif" lazyload alt="评分页面"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130855688.png" srcset="/img/loading.gif" lazyload alt="添加到我观看单的页面"></p>
+<p>4、删除我的观看单里的影片并重新计算平均评分值和观看时间</p>
+<p><img src="C:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216131151401.png" srcset="/img/loading.gif" lazyload alt="删除前"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216131259225.png" srcset="/img/loading.gif" lazyload alt="删除后"></p>
+<h2 id="（二）实现代码及解析"><a href="#（二）实现代码及解析" class="headerlink" title="（二）实现代码及解析"></a>（二）实现代码及解析</h2><p><strong>组件总览：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216140545121.png" srcset="/img/loading.gif" lazyload alt="组件总览"></p>
+<p><strong>组件分析：</strong></p>
+<h3 id="（1）App"><a href="#（1）App" class="headerlink" title="（1）App"></a>（1）App</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> [query, setQuery] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;&quot;</span>);<br>  <span class="hljs-keyword">const</span> [movies, setMovies] = <span class="hljs-title function_">useState</span>([]);<br>  <span class="hljs-keyword">const</span> [watched, setWatched] = <span class="hljs-title function_">useState</span>([]);<br>  <span class="hljs-keyword">const</span> [isLoading, setIsLoading] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);<br>  <span class="hljs-keyword">const</span> [error, setError] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;&quot;</span>);<br>  <span class="hljs-keyword">const</span> [selectedId, setSelectedId] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">null</span>);<br><br>  <span class="hljs-comment">// useEffect(function () &#123;</span><br>  <span class="hljs-comment">//   console.log(&quot;After initial render&quot;);</span><br>  <span class="hljs-comment">// &#125;, []);</span><br><br>  <span class="hljs-comment">// useEffect(function () &#123;</span><br>  <span class="hljs-comment">//   console.log(&quot;After every render&quot;);</span><br>  <span class="hljs-comment">// &#125;);</span><br><br>  <span class="hljs-comment">// console.log(&quot;During render&quot;);</span><br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleSelectMovie</span>(<span class="hljs-params">id</span>) &#123;<br>    <span class="hljs-title function_">setSelectedId</span>(<span class="hljs-function">(<span class="hljs-params">selectedId</span>) =&gt;</span> (id === selectedId ? <span class="hljs-literal">null</span> : id));<br>  &#125;<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleCloseMovie</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-title function_">setSelectedId</span>(<span class="hljs-literal">null</span>);<br>  &#125;<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleAddWatched</span>(<span class="hljs-params">movie</span>) &#123;<br>    <span class="hljs-title function_">setWatched</span>(<span class="hljs-function">(<span class="hljs-params">watched</span>) =&gt;</span> [...watched, movie]);<br>  &#125;<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleDeleteWatched</span>(<span class="hljs-params">id</span>) &#123;<br>    <span class="hljs-title function_">setWatched</span>(<span class="hljs-function">(<span class="hljs-params">watched</span>) =&gt;</span> watched.<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">movie</span>) =&gt;</span> movie.<span class="hljs-property">imdbID</span> !== id));<br>  &#125;<br><br>  <span class="hljs-title function_">useEffect</span>(<br>    <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">const</span> controller = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AbortController</span>();<br><br>      <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchMovies</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>          <span class="hljs-title function_">setIsLoading</span>(<span class="hljs-literal">true</span>);<br>          <span class="hljs-title function_">setError</span>(<span class="hljs-string">&quot;&quot;</span>);<br><br>          <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<br>            <span class="hljs-string">`http://www.omdbapi.com/?apikey=<span class="hljs-subst">$&#123;KEY&#125;</span>&amp;s=<span class="hljs-subst">$&#123;query&#125;</span>`</span>,<br>            &#123; <span class="hljs-attr">signal</span>: controller.<span class="hljs-property">signal</span> &#125;<br>          );<br>          <span class="hljs-comment">//网络问题，http响应状态码不是2xx</span><br>          <span class="hljs-keyword">if</span> (!res.<span class="hljs-property">ok</span>)<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Something went wrong with fetching movies&quot;</span>);<br><br>          <span class="hljs-comment">//APIkey错误，API返回内容中Response字段为False</span><br>          <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();<br><br>          <span class="hljs-keyword">if</span> (data.<span class="hljs-property">Response</span> === <span class="hljs-string">&quot;False&quot;</span>) &#123;<br>            <span class="hljs-title function_">setMovies</span>([]);<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Movie not found&quot;</span>);<br>          &#125;<br>          <span class="hljs-title function_">setMovies</span>(data.<span class="hljs-property">Search</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (err) &#123;<br>          <span class="hljs-keyword">if</span> (err.<span class="hljs-property">name</span> !== <span class="hljs-string">&quot;AbortError&quot;</span>) &#123;<br>            <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err.<span class="hljs-property">message</span>);<br>            <span class="hljs-title function_">setError</span>(err.<span class="hljs-property">message</span>);<br>          &#125;<br>        &#125; <span class="hljs-keyword">finally</span> &#123;<br>          <span class="hljs-title function_">setIsLoading</span>(<span class="hljs-literal">false</span>);<br>        &#125;<br>      &#125;<br><br>      <span class="hljs-keyword">if</span> (!query.<span class="hljs-property">length</span>) &#123;<br>        <span class="hljs-title function_">setMovies</span>([]);<br>        <span class="hljs-title function_">setError</span>(<span class="hljs-string">&quot;&quot;</span>);<br>        <span class="hljs-keyword">return</span>; <span class="hljs-comment">//return是为了不执行fetchMovies函数，提前退出function</span><br>      &#125;<br><br>      <span class="hljs-title function_">handleCloseMovie</span>();<br>      <span class="hljs-title function_">fetchMovies</span>();<br><br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        controller.<span class="hljs-title function_">abort</span>();<br>      &#125;;<br>    &#125;,<br>    [query]<br>  );<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">NavBar</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Search</span> <span class="hljs-attr">query</span>=<span class="hljs-string">&#123;query&#125;</span> <span class="hljs-attr">setQuery</span>=<span class="hljs-string">&#123;setQuery&#125;</span> /&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Numresults</span> <span class="hljs-attr">movies</span>=<span class="hljs-string">&#123;movies&#125;</span> /&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">NavBar</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">Main</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Box</span>&gt;</span></span><br><span class="language-xml">          &#123;/* &#123;isLoading ? <span class="hljs-tag">&lt;<span class="hljs-name">Loader</span> /&gt;</span> : <span class="hljs-tag">&lt;<span class="hljs-name">MovieList</span> <span class="hljs-attr">movies</span>=<span class="hljs-string">&#123;movies&#125;</span> /&gt;</span>&#125; */&#125;</span><br><span class="language-xml">          &#123;isLoading &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">Loader</span> /&gt;</span>&#125;</span><br><span class="language-xml">          &#123;!isLoading &amp;&amp; !error &amp;&amp; (</span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">MovieList</span> <span class="hljs-attr">movies</span>=<span class="hljs-string">&#123;movies&#125;</span> <span class="hljs-attr">onSelectMovie</span>=<span class="hljs-string">&#123;handleSelectMovie&#125;</span> /&gt;</span></span><br><span class="language-xml">          )&#125;</span><br><span class="language-xml">          &#123;error &amp;&amp; <span class="hljs-tag">&lt;<span class="hljs-name">ErrorMessage</span> <span class="hljs-attr">message</span>=<span class="hljs-string">&#123;error&#125;</span> /&gt;</span>&#125;</span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">Box</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Box</span>&gt;</span></span><br><span class="language-xml">          &#123;selectedId ? (</span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">MovieDetails</span></span></span><br><span class="hljs-tag"><span class="language-xml">              <span class="hljs-attr">selectedId</span>=<span class="hljs-string">&#123;selectedId&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">              <span class="hljs-attr">onCloseMovie</span>=<span class="hljs-string">&#123;handleCloseMovie&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">              <span class="hljs-attr">onAddWatched</span>=<span class="hljs-string">&#123;handleAddWatched&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">              <span class="hljs-attr">watched</span>=<span class="hljs-string">&#123;watched&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">            /&gt;</span></span><br><span class="language-xml">          ) : (</span><br><span class="language-xml">            <span class="hljs-tag">&lt;&gt;</span></span><br><span class="language-xml">              <span class="hljs-tag">&lt;<span class="hljs-name">WatchedSummary</span> <span class="hljs-attr">watched</span>=<span class="hljs-string">&#123;watched&#125;</span> /&gt;</span></span><br><span class="language-xml">              <span class="hljs-tag">&lt;<span class="hljs-name">WatchedMovieList</span></span></span><br><span class="hljs-tag"><span class="language-xml">                <span class="hljs-attr">watched</span>=<span class="hljs-string">&#123;watched&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                <span class="hljs-attr">onDeleteWatched</span>=<span class="hljs-string">&#123;handleDeleteWatched&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">              /&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;/&gt;</span></span><br><span class="language-xml">          )&#125;</span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">Box</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">Main</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（2）NavBar"><a href="#（2）NavBar" class="headerlink" title="（2）NavBar"></a>（2）NavBar</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">NavBar</span>(<span class="hljs-params">&#123; children &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;nav-bar&quot;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">Logo</span> /&gt;</span></span><br><span class="language-xml">      &#123;children&#125;</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（3）Logo"><a href="#（3）Logo" class="headerlink" title="（3）Logo"></a>（3）Logo</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Logo</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;logo&quot;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;img&quot;</span>&gt;</span>🍿<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>usePopcorn<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（4）Search"><a href="#（4）Search" class="headerlink" title="（4）Search"></a>（4）Search</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Search</span>(<span class="hljs-params">&#123; query, setQuery &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;search&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Search movies...&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">value</span>=<span class="hljs-string">&#123;query&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">onChange</span>=<span class="hljs-string">&#123;(e)</span> =&gt;</span> setQuery(e.target.value)&#125;</span><br><span class="language-xml">    /&gt;</span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（5）Numresults"><a href="#（5）Numresults" class="headerlink" title="（5）Numresults"></a>（5）Numresults</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Numresults</span>(<span class="hljs-params">&#123; movies &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;num-results&quot;</span>&gt;</span></span><br><span class="language-xml">      Found <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>&#123;movies.length&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span> results</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（6）Main"><a href="#（6）Main" class="headerlink" title="（6）Main"></a>（6）Main</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Main</span>(<span class="hljs-params">&#123; children &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">main</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;main&quot;</span>&gt;</span>&#123;children&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（7）Box"><a href="#（7）Box" class="headerlink" title="（7）Box"></a>（7）Box</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Box</span>(<span class="hljs-params">&#123; children &#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> [isOpen, setIsOpen] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">true</span>);<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;btn-toggle&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> setIsOpen((open) =&gt; !open)&#125;&gt;</span><br><span class="language-xml">        &#123;isOpen ? &quot;–&quot; : &quot;+&quot;&#125;</span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">      &#123;isOpen &amp;&amp; children&#125;</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（8）Loader"><a href="#（8）Loader" class="headerlink" title="（8）Loader"></a>（8）Loader</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Loader</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;loader&quot;</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（9）ErrorMessage"><a href="#（9）ErrorMessage" class="headerlink" title="（9）ErrorMessage"></a>（9）ErrorMessage</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ErrorMessage</span>(<span class="hljs-params">&#123; message &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;error&quot;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>🚫<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">      &#123;message&#125;</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（10）MovieList"><a href="#（10）MovieList" class="headerlink" title="（10）MovieList"></a>（10）MovieList</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">MovieList</span>(<span class="hljs-params">&#123; movies, onSelectMovie &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;list list-movies&quot;</span>&gt;</span></span><br><span class="language-xml">      &#123;movies?.map((movie) =&gt; (</span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Movie</span> <span class="hljs-attr">movie</span>=<span class="hljs-string">&#123;movie&#125;</span> <span class="hljs-attr">onSelectMovie</span>=<span class="hljs-string">&#123;onSelectMovie&#125;</span> /&gt;</span></span><br><span class="language-xml">      ))&#125;</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（11）Movie"><a href="#（11）Movie" class="headerlink" title="（11）Movie"></a>（11）Movie</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Movie</span>(<span class="hljs-params">&#123; movie, onSelectMovie &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;movie.imdbID&#125;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> onSelectMovie(movie.imdbID)&#125;&gt;</span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&#123;movie.Poster&#125;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&#123;</span>`$&#123;<span class="hljs-attr">movie.Title</span>&#125; <span class="hljs-attr">poster</span>`&#125; /&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>&#123;movie.Title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>🗓<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;movie.Year&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（12）MovieDetails"><a href="#（12）MovieDetails" class="headerlink" title="（12）MovieDetails"></a>（12）MovieDetails</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">MovieDetails</span>(<span class="hljs-params">&#123; selectedId, onCloseMovie, onAddWatched, watched &#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> [movie, setMovie] = <span class="hljs-title function_">useState</span>(&#123;&#125;);<br>  <span class="hljs-keyword">const</span> [isLoading, setIsLoading] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);<br>  <span class="hljs-keyword">const</span> [userRating, setUserRating] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;&quot;</span>);<br><br>  <span class="hljs-keyword">const</span> isWatched = watched.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">movie</span>) =&gt;</span> movie.<span class="hljs-property">imdbID</span>).<span class="hljs-title function_">includes</span>(selectedId);<br>  <span class="hljs-keyword">const</span> watchedUserRating = watched.<span class="hljs-title function_">find</span>(<br>    <span class="hljs-function">(<span class="hljs-params">movie</span>) =&gt;</span> movie.<span class="hljs-property">imdbID</span> === selectedId<br>  )?.<span class="hljs-property">userRating</span>;<br>  <span class="hljs-keyword">const</span> &#123;<br>    <span class="hljs-title class_">Title</span>: title,<br>    <span class="hljs-title class_">Year</span>: year,<br>    <span class="hljs-title class_">Poster</span>: poster,<br>    <span class="hljs-title class_">Runtime</span>: runtime,<br>    imdbRating,<br>    <span class="hljs-title class_">Plot</span>: plot,<br>    <span class="hljs-title class_">Released</span>: released,<br>    <span class="hljs-title class_">Actors</span>: actors,<br>    <span class="hljs-title class_">Director</span>: director,<br>    <span class="hljs-title class_">Genre</span>: genre,<br>  &#125; = movie;<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleAdd</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> newWatchedMovie = &#123;<br>      <span class="hljs-attr">imdbID</span>: selectedId,<br>      title,<br>      year,<br>      poster,<br>      <span class="hljs-attr">imdbRating</span>: <span class="hljs-title class_">Number</span>(imdbRating),<br>      <span class="hljs-attr">runtime</span>: <span class="hljs-title class_">Number</span>(runtime.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot; &quot;</span>).<span class="hljs-title function_">at</span>(<span class="hljs-number">0</span>)),<br>      userRating,<br>    &#125;;<br>    <span class="hljs-title function_">onAddWatched</span>(newWatchedMovie);<br>    <span class="hljs-title function_">onCloseMovie</span>();<br>  &#125;<br><br>  <span class="hljs-title function_">useEffect</span>(<br>    <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">function</span> <span class="hljs-title function_">callback</span>(<span class="hljs-params">e</span>) &#123;<br>        <span class="hljs-keyword">if</span> (e.<span class="hljs-property">code</span> === <span class="hljs-string">&quot;Escape&quot;</span>) &#123;<br>          <span class="hljs-title function_">onCloseMovie</span>();<br>        &#125;<br>      &#125;<br><br>      <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;keydown&quot;</span>, callback);<br><br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">&quot;keydown&quot;</span>, callback);<br>      &#125;;<br>    &#125;,<br>    [onCloseMovie]<br>  );<br><br>  <span class="hljs-title function_">useEffect</span>(<br>    <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getMovieDetails</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title function_">setIsLoading</span>(<span class="hljs-literal">true</span>);<br>        <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<br>          <span class="hljs-string">`http://www.omdbapi.com/?apikey=<span class="hljs-subst">$&#123;KEY&#125;</span>&amp;i=<span class="hljs-subst">$&#123;selectedId&#125;</span>`</span><br>        );<br>        <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();<br>        <span class="hljs-title function_">setMovie</span>(data);<br>        <span class="hljs-title function_">setIsLoading</span>(<span class="hljs-literal">false</span>);<br>      &#125;<br>      <span class="hljs-title function_">getMovieDetails</span>();<br>    &#125;,<br>    [selectedId]<br>  );<br><br>  <span class="hljs-title function_">useEffect</span>(<br>    <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>      <span class="hljs-keyword">if</span> (!title) <span class="hljs-keyword">return</span>;<br>      <span class="hljs-variable language_">document</span>.<span class="hljs-property">title</span> = <span class="hljs-string">`Movie | <span class="hljs-subst">$&#123;title&#125;</span>`</span>;<br><br>      <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-variable language_">document</span>.<span class="hljs-property">title</span> = <span class="hljs-string">&quot;usePopcorn&quot;</span>;<br>      &#125;;<br>    &#125;,<br>    [title]<br>  );<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;details&quot;</span>&gt;</span></span><br><span class="language-xml">      &#123;isLoading ? (</span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Loader</span> /&gt;</span></span><br><span class="language-xml">      ) : (</span><br><span class="language-xml">        <span class="hljs-tag">&lt;&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;btn-back&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;onCloseMovie&#125;</span>&gt;</span></span><br><span class="language-xml">              <span class="hljs-symbol">&amp;larr;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&#123;poster&#125;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&#123;</span>`<span class="hljs-attr">Poster</span> <span class="hljs-attr">of</span> $&#123;<span class="hljs-attr">movie</span>&#125; <span class="hljs-attr">movie</span>`&#125; /&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;details-overview&quot;</span>&gt;</span></span><br><span class="language-xml">              <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>&#123;title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">              <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">                &#123;released&#125;<span class="hljs-symbol">&amp;bull;</span>&#123;runtime&#125;</span><br><span class="language-xml">              <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">              <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>&#123;genre&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">              <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">                <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>⭐<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">                &#123;imdbRating&#125;IMDb Rating</span><br><span class="language-xml">              <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">section</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;rating&quot;</span>&gt;</span></span><br><span class="language-xml">              &#123;!isWatched ? (</span><br><span class="language-xml">                <span class="hljs-tag">&lt;&gt;</span></span><br><span class="language-xml">                  <span class="hljs-tag">&lt;<span class="hljs-name">StarRating</span></span></span><br><span class="hljs-tag"><span class="language-xml">                    <span class="hljs-attr">maxRating</span>=<span class="hljs-string">&#123;10&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                    <span class="hljs-attr">size</span>=<span class="hljs-string">&#123;24&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                    <span class="hljs-attr">onSetRating</span>=<span class="hljs-string">&#123;setUserRating&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">                  /&gt;</span></span><br><span class="language-xml">                  &#123;userRating &gt; 0 &amp;&amp; (</span><br><span class="language-xml">                    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;btn-add&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;handleAdd&#125;</span>&gt;</span></span><br><span class="language-xml">                      + Add to list</span><br><span class="language-xml">                    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">                  )&#125;</span><br><span class="language-xml">                <span class="hljs-tag">&lt;/&gt;</span></span><br><span class="language-xml">              ) : (</span><br><span class="language-xml">                <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">                  You rated with movie &#123;watchedUserRating&#125;</span><br><span class="language-xml">                  <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>⭐<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">                <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">              )&#125;</span><br><span class="language-xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">              <span class="hljs-tag">&lt;<span class="hljs-name">em</span>&gt;</span>&#123;plot&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">em</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Starring &#123;actors&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Directed by &#123;director&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span></span><br>        &lt;/&gt;<br>      )&#125;<br>    &lt;/div&gt;<br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（13）WatchedSummary"><a href="#（13）WatchedSummary" class="headerlink" title="（13）WatchedSummary"></a>（13）WatchedSummary</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">WatchedSummary</span>(<span class="hljs-params">&#123; watched &#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> avgImdbRating = <span class="hljs-title function_">average</span>(watched.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">movie</span>) =&gt;</span> movie.<span class="hljs-property">imdbRating</span>));<br>  <span class="hljs-keyword">const</span> avgUserRating = <span class="hljs-title function_">average</span>(watched.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">movie</span>) =&gt;</span> movie.<span class="hljs-property">userRating</span>));<br>  <span class="hljs-keyword">const</span> avgRuntime = <span class="hljs-title function_">average</span>(watched.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">movie</span>) =&gt;</span> movie.<span class="hljs-property">runtime</span>));<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;summary&quot;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Movies you watched<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>#️⃣<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;watched.length&#125; movies<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>⭐️<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;avgImdbRating.toFixed(2)&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>🌟<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;avgUserRating.toFixed(2)&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>⏳<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;avgRuntime&#125; min<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（14）WatchedMovieList"><a href="#（14）WatchedMovieList" class="headerlink" title="（14）WatchedMovieList"></a>（14）WatchedMovieList</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">WatchedMovieList</span>(<span class="hljs-params">&#123; watched, onDeleteWatched &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;list&quot;</span>&gt;</span></span><br><span class="language-xml">      &#123;watched.map((movie) =&gt; (</span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">WatchedMovie</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">movie</span>=<span class="hljs-string">&#123;movie&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;movie.imdbID&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">onDeleteWatched</span>=<span class="hljs-string">&#123;onDeleteWatched&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">        /&gt;</span></span><br><span class="language-xml">      ))&#125;</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（15）WatchedMovie"><a href="#（15）WatchedMovie" class="headerlink" title="（15）WatchedMovie"></a>（15）WatchedMovie</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">WatchedMovie</span>(<span class="hljs-params">&#123; movie, onDeleteWatched &#125;</span>) &#123;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;movie.imdbID&#125;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&#123;movie.poster&#125;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&#123;</span>`$&#123;<span class="hljs-attr">movie.title</span>&#125; <span class="hljs-attr">poster</span>`&#125; /&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>&#123;movie.title&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>⭐️<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;movie.imdbRating&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>🌟<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;movie.userRating&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>⏳<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;movie.runtime&#125; min<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">button</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;btn-delete&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;()</span> =&gt;</span> onDeleteWatched(movie.imdbID)&#125;</span><br><span class="language-xml">        &gt;</span><br><span class="language-xml">          X</span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+<h3 id="（16）StarRating"><a href="#（16）StarRating" class="headerlink" title="（16）StarRating"></a>（16）StarRating</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">import</span> &#123; useState &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">PropTypes</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;prop-types&quot;</span>;<br><br><span class="hljs-keyword">const</span> containerStyle = &#123;<br>  <span class="hljs-attr">display</span>: <span class="hljs-string">&quot;flex&quot;</span>,<br>  <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;center&quot;</span>,<br>  <span class="hljs-attr">gap</span>: <span class="hljs-string">&quot;16px&quot;</span>,<br>&#125;;<br><br><span class="hljs-keyword">const</span> starContainerStyle = &#123;<br>  <span class="hljs-attr">display</span>: <span class="hljs-string">&quot;flex&quot;</span>,<br>&#125;;<br><span class="hljs-comment">//可重用组件:</span><br><span class="hljs-title class_">StarRating</span>.<span class="hljs-property">propTypes</span> = &#123;<br>  <span class="hljs-attr">maxRating</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">number</span>,<br>  <span class="hljs-attr">defaultRating</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">number</span>,<br>  <span class="hljs-attr">color</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">string</span>,<br>  <span class="hljs-attr">size</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">number</span>,<br>  <span class="hljs-attr">message</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">array</span>,<br>  <span class="hljs-attr">className</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">string</span>,<br>  <span class="hljs-attr">onSetRating</span>: <span class="hljs-title class_">PropTypes</span>.<span class="hljs-property">func</span>,<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">StarRating</span>(<span class="hljs-params">&#123;</span><br><span class="hljs-params">  maxRating = <span class="hljs-number">5</span>,</span><br><span class="hljs-params">  color = <span class="hljs-string">&quot;#fcc419&quot;</span>,</span><br><span class="hljs-params">  size = <span class="hljs-number">48</span>,</span><br><span class="hljs-params">  className = <span class="hljs-string">&quot;&quot;</span>,</span><br><span class="hljs-params">  messages = [],</span><br><span class="hljs-params">  defaultRating = <span class="hljs-number">0</span>,</span><br><span class="hljs-params">  onSetRating,</span><br><span class="hljs-params">&#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> [rating, setRating] = <span class="hljs-title function_">useState</span>(defaultRating);<br>  <span class="hljs-keyword">const</span> [tempRating, setTempRating] = <span class="hljs-title function_">useState</span>(<span class="hljs-number">0</span>);<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleRating</span>(<span class="hljs-params">rating</span>) &#123;<br>    <span class="hljs-title function_">setRating</span>(rating);<br>    <span class="hljs-title function_">onSetRating</span>(rating);<br>  &#125;<br><br>  <span class="hljs-keyword">const</span> textStyle = &#123;<br>    <span class="hljs-attr">lineHeight</span>: <span class="hljs-string">&quot;1&quot;</span>,<br>    <span class="hljs-attr">maigin</span>: <span class="hljs-string">&quot;0&quot;</span>,<br>    color,<br>    <span class="hljs-attr">fontSize</span>: <span class="hljs-string">`<span class="hljs-subst">$&#123;size / <span class="hljs-number">1.5</span>&#125;</span>px`</span>,<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;containerStyle&#125;</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&#123;className&#125;</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;starContainerStyle&#125;</span>&gt;</span></span><br><span class="language-xml">        &#123;Array.from(&#123; length: maxRating &#125;, (_, i) =&gt; (</span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">Star</span></span></span><br><span class="hljs-tag"><span class="language-xml">            <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;i&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">            <span class="hljs-attr">full</span>=<span class="hljs-string">&#123;tempRating</span> ? <span class="hljs-attr">tempRating</span> &gt;</span>= i + 1 : rating &gt;= i + 1&#125;</span><br><span class="language-xml">            onRate=&#123;() =&gt; handleRating(i + 1)&#125;</span><br><span class="language-xml">            onHoverIn=&#123;() =&gt; setTempRating(i + 1)&#125;</span><br><span class="language-xml">            onHoverOut=&#123;() =&gt; setTempRating(0)&#125;</span><br><span class="language-xml">            color=&#123;color&#125;</span><br><span class="language-xml">            size=&#123;size&#125;</span><br><span class="language-xml">          /&gt;</span><br><span class="language-xml">        ))&#125;</span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;textStyle&#125;</span>&gt;</span></span><br><span class="language-xml">        &#123;messages.length === maxRating</span><br><span class="language-xml">          ? messages[tempRating ? tempRating - 1 : rating - 1]</span><br><span class="language-xml">          : tempRating || rating || &quot;&quot;&#125;</span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Star</span>(<span class="hljs-params">&#123; onRate, full, onHoverIn, onHoverOut, color, size &#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> starStyle = &#123;<br>    <span class="hljs-attr">width</span>: <span class="hljs-string">`<span class="hljs-subst">$&#123;size&#125;</span>px`</span>,<br>    <span class="hljs-attr">height</span>: <span class="hljs-string">`<span class="hljs-subst">$&#123;size&#125;</span>px`</span>,<br>    <span class="hljs-attr">display</span>: <span class="hljs-string">&quot;block&quot;</span>,<br>    <span class="hljs-attr">cursor</span>: <span class="hljs-string">&quot;pointer&quot;</span>,<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">role</span>=<span class="hljs-string">&quot;button&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">style</span>=<span class="hljs-string">&#123;starStyle&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">onClick</span>=<span class="hljs-string">&#123;onRate&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">onMouseEnter</span>=<span class="hljs-string">&#123;onHoverIn&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">      <span class="hljs-attr">onMouseLeave</span>=<span class="hljs-string">&#123;onHoverOut&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">    &gt;</span></span><br><span class="language-xml">      &#123;full ? (</span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">svg</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 20 20&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">fill</span>=<span class="hljs-string">&#123;color&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">stroke</span>=<span class="hljs-string">&#123;color&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">        &gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z&quot;</span> /&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></span><br><span class="language-xml">      ) : (</span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">svg</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0 0 24 24&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          <span class="hljs-attr">stroke</span>=<span class="hljs-string">&#123;color&#125;</span></span></span><br><span class="hljs-tag"><span class="language-xml">        &gt;</span></span><br><span class="language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">path</span></span></span><br><span class="hljs-tag"><span class="language-xml">            <span class="hljs-attr">strokeLinecap</span>=<span class="hljs-string">&quot;round&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">            <span class="hljs-attr">strokeLinejoin</span>=<span class="hljs-string">&quot;round&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">            <span class="hljs-attr">strokeWidth</span>=<span class="hljs-string">&quot;&#123;2&#125;&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">            <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">          /&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></span><br><span class="language-xml">      )&#125;</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>解释：</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/React/" class="category-chain-item">React</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/React/" class="print-no-link">#React</a>
+      
+        <a href="/tags/JSX/" class="print-no-link">#JSX</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>06-usePopcorn</div>
+      <div>http://sue-channing.github.io/2024/12/16/06-usePopcorn/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Sue-Channing</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/04/05-eat-n-split/" title="05-eat-n-split">
+                        <span class="hidden-mobile">05-eat-n-split</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <div class="disqus" style="width:100%">
+    <div id="disqus_thread"></div>
+    
+      <script type="text/javascript">
+        var disqus_config = function() {
+          this.page.url = 'http://sue-channing.github.io/2024/12/16/06-usePopcorn/';
+          this.page.identifier = '/2024/12/16/06-usePopcorn/';
+        };
+        Fluid.utils.loadComments('#disqus_thread', function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//' + 'fluid' + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', new Date());
+          (d.head || d.body).appendChild(s);
+        });
+      </script>
+    
+    <noscript>Please enable JavaScript to view the comments</noscript>
+  </div>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://sue-channing.github.io/about/" target="_blank" rel="nofollow noopener"><span>Sue-Channing</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    
+      <script  src="/js/img-lazyload.js" ></script>
+    
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
