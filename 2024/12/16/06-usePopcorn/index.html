@@ -28,23 +28,23 @@
 <meta property="og:site_name" content="Sue-Channing">
 <meta property="og:description" content="usePopcorn(记录观看过的电影并打分)（一）实现页面及功能页面：  组件树：  功能： 1、输入电影名称搜索电影，搜索数量呈现在Numresults组件里，搜索结果呈现在左侧的Box组件里。  2、选择并查看电影简介及详细信息（上映时间，电影时长，电影类型，平均评分，主演人员，导演等）   3、对电影进行评分并添加在我的电影表单里   4、删除我的观看单里的影片并重新计算平均评分值和观看时">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216124806232.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216125046536.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130354360.png">
-<meta property="og:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216130710192.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/%E5%8A%9F%E8%83%BD2.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216142930705.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130821163.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130855688.png">
-<meta property="og:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216131151401.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216131151401.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216131259225.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216140545121.png">
 <meta property="article:published_time" content="2024-12-16T05:09:45.696Z">
-<meta property="article:modified_time" content="2024-12-16T06:46:20.915Z">
+<meta property="article:modified_time" content="2024-12-20T05:49:36.506Z">
 <meta property="article:author" content="Sue-Channing">
 <meta property="article:tag" content="React">
 <meta property="article:tag" content="JSX">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="c:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216124806232.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -342,7 +342,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年12月16日 下午
+                    本文最后更新于 2024年12月20日 下午
                   
                 
               </p>
@@ -351,20 +351,20 @@
               <div class="markdown-body">
                 
                 <h1 id="usePopcorn-记录观看过的电影并打分"><a href="#usePopcorn-记录观看过的电影并打分" class="headerlink" title="usePopcorn(记录观看过的电影并打分)"></a>usePopcorn(记录观看过的电影并打分)</h1><h2 id="（一）实现页面及功能"><a href="#（一）实现页面及功能" class="headerlink" title="（一）实现页面及功能"></a>（一）实现页面及功能</h2><p><strong>页面：</strong></p>
-<p><img src="C:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216124806232.png" srcset="/img/loading.gif" lazyload alt="初始页面"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2.png" srcset="/img/loading.gif" lazyload alt="初始页面"></p>
 <p><strong>组件树：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216125046536.png" srcset="/img/loading.gif" lazyload alt="组件树"></p>
 <p><strong>功能：</strong></p>
 <p>1、输入电影名称搜索电影，搜索数量呈现在Numresults组件里，搜索结果呈现在左侧的Box组件里。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130354360.png" srcset="/img/loading.gif" lazyload alt="功能1"></p>
 <p>2、选择并查看电影简介及详细信息（上映时间，电影时长，电影类型，平均评分，主演人员，导演等）</p>
-<p><img src="C:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216130710192.png" srcset="/img/loading.gif" lazyload alt="功能2"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/%E5%8A%9F%E8%83%BD2.png" srcset="/img/loading.gif" lazyload alt="功能2"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216142930705.png" srcset="/img/loading.gif" lazyload alt="此时组件树"></p>
 <p>3、对电影进行评分并添加在我的电影表单里</p>
 <p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130821163.png" srcset="/img/loading.gif" lazyload alt="评分页面"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216130855688.png" srcset="/img/loading.gif" lazyload alt="添加到我观看单的页面"></p>
 <p>4、删除我的观看单里的影片并重新计算平均评分值和观看时间</p>
-<p><img src="C:/Users/%E6%A7%90%E5%BA%8F%E5%8D%81%E4%B8%83/Desktop/image-20241216131151401.png" srcset="/img/loading.gif" lazyload alt="删除前"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216131151401.png" srcset="/img/loading.gif" lazyload alt="删除前"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216131259225.png" srcset="/img/loading.gif" lazyload alt="删除后"></p>
 <h2 id="（二）实现代码及解析"><a href="#（二）实现代码及解析" class="headerlink" title="（二）实现代码及解析"></a>（二）实现代码及解析</h2><p><strong>组件总览：</strong></p>
 <p><img src="https://cdn.jsdelivr.net/gh/Sue-Channing/picgo@main/picgo/image-20241216140545121.png" srcset="/img/loading.gif" lazyload alt="组件总览"></p>
